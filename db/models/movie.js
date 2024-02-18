@@ -50,7 +50,10 @@ module.exports = (sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false, // disallow null
       },
-    }, { sequelize });
+    }, { 
+        paranoid: true, // enable "soft" deletes
+        sequelize 
+    });
   
     return Movie;
   };

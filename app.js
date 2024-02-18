@@ -35,13 +35,15 @@ const { Op } = db.Sequelize;
       });
       await movie3.save(); // save the record
 
-      const toyStory3 = await Movie.findByPk(3);
-      await toyStory3.update({
-        title: 'Trinket Tale 3',
-        isAvailableOnVHS: true,
-      }, { fields: ['title', 'isAvailableOnVHS'] });  
+      // Find a record
+    const toyStory = await Movie.findByPk(3);
 
-    console.log( toyStory3.get({ plain: true }) );
+    // Delete a record
+    await toyStory.destroy();
+
+    // Find and log all movies
+    const movies = await Movie.findAll();
+    console.log( movies.map(movie => movie.toJSON()) );
 
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
