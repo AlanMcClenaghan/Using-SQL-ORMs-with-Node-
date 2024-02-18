@@ -28,6 +28,16 @@ const { Movie, Person } = db.models;
     });
     console.log(person.toJSON());
 
+    // New instance
+    const movie3 = await Movie.build({
+        title: 'Toy Story 3',
+        runtime: 103,
+        releaseDate: '2010-06-18',
+        isAvailableOnVHS: false,
+      });
+      await movie3.save(); // save the record
+      console.log(movie3.toJSON());
+      
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       const errors = error.errors.map(err => err.message);
