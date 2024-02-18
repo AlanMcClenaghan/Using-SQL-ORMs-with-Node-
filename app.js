@@ -11,7 +11,6 @@ const { Movie, Person } = db.models;
       releaseDate: '1995-11-22',
       isAvailableOnVHS: true,
     });
-    console.log(movie.toJSON());
 
     const movie2 = await Movie.create({
       title: 'The Incredibles',
@@ -19,14 +18,12 @@ const { Movie, Person } = db.models;
       releaseDate: '2004-04-14',
       isAvailableOnVHS: true,
     });
-    console.log(movie2.toJSON());
 
     // New Person record
     const person = await Person.create({
         firstName: 'Tom',
         lastName: 'Hanks',
     });
-    console.log(person.toJSON());
 
     // New instance
     const movie3 = await Movie.build({
@@ -36,8 +33,16 @@ const { Movie, Person } = db.models;
         isAvailableOnVHS: false,
       });
       await movie3.save(); // save the record
-      console.log(movie3.toJSON());
-      
+
+    const movieById = await Movie.findByPk(3);
+    console.log(movieById.toJSON());
+
+    const movieByRuntime = await Movie.findOne({ where: { runtime: 115 } });
+    console.log(movieByRuntime.toJSON());
+
+    const movies = await Movie.findAll();
+    console.log( movies.map(movie => movie.toJSON()) );
+
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       const errors = error.errors.map(err => err.message);
