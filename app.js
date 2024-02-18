@@ -35,16 +35,13 @@ const { Op } = db.Sequelize;
       });
       await movie3.save(); // save the record
 
-      const movies = await Movie.findAll({
-        attributes: ['id', 'title', 'releaseDate'],
-        where: {
-          releaseDate: {
-            [Op.gte]: '1995-01-01'
-          }
-        },
-        order: [['releaseDate', 'ASC']], // dates in ascending order
-      });
-      console.log( movies.map(movie => movie.toJSON()) );
+      const toyStory3 = await Movie.findByPk(3);
+      await toyStory3.update({
+        title: 'Trinket Tale 3',
+        isAvailableOnVHS: true,
+      }, { fields: ['title', 'isAvailableOnVHS'] });  
+
+    console.log( toyStory3.get({ plain: true }) );
 
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
