@@ -1,5 +1,6 @@
 const db = require('./db');
 const { Movie, Person } = db.models;
+const { Op } = db.Sequelize;
 
 (async () => {
   await db.sequelize.sync({ force: true });
@@ -34,14 +35,16 @@ const { Movie, Person } = db.models;
       });
       await movie3.save(); // save the record
 
-    const movieById = await Movie.findByPk(3);
-    console.log(movieById.toJSON());
-
-    const movieByRuntime = await Movie.findOne({ where: { runtime: 115 } });
-    console.log(movieByRuntime.toJSON());
-
-    const movies = await Movie.findAll();
-    console.log( movies.map(movie => movie.toJSON()) );
+      const movies = await Movie.findAll({
+        attributes: ['id', 'title', 'releaseDate'],
+        where: {
+          releaseDate: {
+            [Op.gte]: '1995-01-01'
+          }
+        },
+        order: [['releaseDate', 'ASC']], // dates in ascending order
+      });
+      console.log( movies.map(movie => movie.toJSON()) );
 
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
